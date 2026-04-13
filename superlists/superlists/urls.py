@@ -20,5 +20,5 @@ from lists import views
 
 urlpatterns = [
     path('', views.home_page),
-    path('admin/', admin.site.urls),
+    path('lists/<int:list_id>/', views.view_list),
 ]
