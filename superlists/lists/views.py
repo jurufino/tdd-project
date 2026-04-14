@@ -1,64 +1,53 @@
-
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from lists.models import List, Item
 
-
-lists = {}
-
-next_id = 1
 
 def home_page(request):
-    global next_id
-
-    item = request.GET.get('item_text')
-
-    if item:
-        list_id = next_id
-        next_id += 1
-
-        lists[list_id] = [item]
-
-        return HttpResponseRedirect(f'/lists/{list_id}/')
-
     return HttpResponse('''
-        <html>
-            <title>To-Do lists</title>
-            <body>
-                <h1>Welcome to To-Do App</h1>
-
-                <form method="GET">
-                    <input name="item_text" placeholder="Enter a to-do item" />
-                </form>
-            </body>
-        </html>
+        <h1>Welcome to To-Do App</h1>
+        <form action="/lists/new" method="GET">
+            <input name="item_text" placeholder="Enter a to-do item" />
+        </form>
     ''')
 
+
+def new_list(request):
+    list_ = List.objects.create()
+    item_text = request.GET.get('item_text')
+
+    if item_text:
+        Item.objects.create(text=item_text, list=list_)
+
+    return redirect(f'/lists/{list_.id}/')
+
+
 def view_list(request, list_id):
-    item = request.GET.get('item_text')
+    list_ = List.objects.get(id=list_id)
 
-    if list_id not in lists:
-        lists[list_id] = []
+    item_text = request.GET.get('item_text')
+    if item_text:
+        Item.objects.create(text=item_text, list=list_)
 
-    if item:
-        lists[list_id].append(item)
+    items = Item.objects.filter(list=list_)
 
     list_html = ''
-    for i, item in enumerate(lists[list_id], start=1):
-        list_html += f'<tr><td>{i}: {item}</td></tr>'
+    for i, item in enumerate(items, start=1):
+        list_html += f'<tr><td>{i}: {item.text}</td></tr>'
 
     return HttpResponse(f'''
         <html>
             <title>To-Do lists</title>
-            <body>
-                <h1>List {list_id}</h1>
-
-                <form method="GET">
-                    <input name="item_text" placeholder="Enter a to-do item" />
-                </form>
-
-                <table>
-                    {list_html}
-                </table>
-            </body>
         </html>
+        <body>
+            <h1>List {list_id}</h1>
+
+            <form method="GET">
+                <input name="item_text" placeholder="Enter a to-do item" />
+            </form>
+
+            <table>
+                {list_html}
+            </table>
+        </body>
     ''')
