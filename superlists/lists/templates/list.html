@@ -2,6 +2,28 @@
 <html>
 <head>
     <title>To-Do lists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        table {
+            margin: 20px auto;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,7 +35,7 @@
 </form>
 
 {% if error %}
-<p style="color: red;">{{ error }}</p>
+<p class="error">{{ error }}</p>
 {% endif %}
 
 <table>

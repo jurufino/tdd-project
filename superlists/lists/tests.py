@@ -18,3 +18,11 @@ class HomePageTest(TestCase):
     def test_invalid_input_nothing_saved(self):
         self.client.post('/', data={'item_text': ''})
         self.assertEqual(Item.objects.count(), 0)
+
+    def test_invalid_input_renders_home_template(self):
+        response = self.client.post('/', data={'item_text': ''})
+        self.assertTemplateUsed(response, 'home.html')
+
+    def test_invalid_input_shows_error(self):
+        response = self.client.post('/', data={'item_text': ''})
+        self.assertContains(response, "Você não pode enviar um item vazio")

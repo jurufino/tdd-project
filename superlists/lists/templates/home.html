@@ -2,6 +2,24 @@
 <html>
 <head>
     <title>To-Do lists</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 
@@ -10,10 +28,13 @@
 <form method="POST">
     {% csrf_token %}
     <input name="item_text" placeholder="Enter a to-do item" />
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
 </form>
 
 {% if error %}
-<p style="color: red;">{{ error }}</p>
+<p class="error">{{ error }}</p>
 {% endif %}
 
 </body>
