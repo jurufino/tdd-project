@@ -24,3 +24,11 @@ urlpatterns = [
     path('lists/new', new_list),  # 🔥 ESSA LINHA É A FALTANDO
     path('lists/<int:list_id>/', view_list),
 ]
+from django.urls import path
+from lists.views import view_list, home_page, new_list
+
+urlpatterns = [
+    path('', home_page, name='home'),
+    path('lists/new', new_list, name='new_list'),
+    path('lists/<int:list_id>/', view_list, name='view_list'),
+]
