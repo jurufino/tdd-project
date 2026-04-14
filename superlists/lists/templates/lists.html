@@ -1,0 +1,16 @@
+<html>
+    <title>To-Do lists</title>
+</html>
+<body>
+    <h1>List {{ list.id }}</h1>
+
+    <form method="GET">
+        <input name="item_text" placeholder="Enter a to-do item" />
+    </form>
+
+    <table>
+        {% for item in items %}
+            <tr><td>{{ forloop.counter }}: {{ item.text }}</td></tr>
+        {% endfor %}
+    </table>
+</body>

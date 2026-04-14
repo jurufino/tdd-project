@@ -1,15 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import render, redirect
 from lists.models import List, Item
 
 
 def home_page(request):
-    return HttpResponse('''
-        <h1>Welcome to To-Do App</h1>
-        <form action="/lists/new" method="GET">
-            <input name="item_text" placeholder="Enter a to-do item" />
-        </form>
-    ''')
+    return render(request, 'home.html')
 
 
 def new_list(request):
@@ -31,23 +25,7 @@ def view_list(request, list_id):
 
     items = Item.objects.filter(list=list_)
 
-    list_html = ''
-    for i, item in enumerate(items, start=1):
-        list_html += f'<tr><td>{i}: {item.text}</td></tr>'
-
-    return HttpResponse(f'''
-        <html>
-            <title>To-Do lists</title>
-        </html>
-        <body>
-            <h1>List {list_id}</h1>
-
-            <form method="GET">
-                <input name="item_text" placeholder="Enter a to-do item" />
-            </form>
-
-            <table>
-                {list_html}
-            </table>
-        </body>
-    ''')
+    return render(request, 'list.html', {
+        'list': list_,
+        'items': items
+    })
