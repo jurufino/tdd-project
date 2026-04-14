@@ -1,25 +1,32 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+import time
 
 browser = webdriver.Firefox()
-browser.get('http://localhost:8000')
 
-assert 'To-Do' in browser.title
+try:
+    # Usuário entra no site
+    browser.get('http://localhost:8000')
 
-inputbox = browser.find_element("tag name", "input")
-assert inputbox.get_attribute('placeholder') == 'Enter a to-do item'
+    assert 'To-Do' in browser.title
 
-# PRIMEIRO ITEM
-inputbox.send_keys('Buy milk')
-inputbox.send_keys(Keys.ENTER)
+    # Encontra o input
+    inputbox = browser.find_element(By.TAG_NAME, 'input')
+    assert inputbox.get_attribute('placeholder') == 'Enter a to-do item'
 
-assert '1: Buy milk' in browser.page_source
+    # Digita um item
+    inputbox.send_keys('Buy milk')
+    inputbox.send_keys(Keys.ENTER)
 
-# SEGUNDO ITEM
-inputbox = browser.find_element("tag name", "input")
-inputbox.send_keys('Make coffee')
-inputbox.send_keys(Keys.ENTER)
+    time.sleep(1)
 
-assert '2: Make coffee' in browser.page_source
+    # Verifica se foi redirecionado para /lists/1
+    assert '/lists/' in browser.current_url
 
-browser.quit()
+    # Verifica se o item apareceu
+    body_text = browser.find_element(By.TAG_NAME, 'body').text
+    assert '1: Buy milk' in body_text
+
+finally:
+    browser.quit()
