@@ -26,3 +26,9 @@ class HomePageTest(TestCase):
     def test_invalid_input_shows_error(self):
         response = self.client.post('/', data={'item_text': ''})
         self.assertContains(response, "Você não pode enviar um item vazio")
+    def test_cannot_save_empty_list_items(self):
+        list_ = List.objects.create()
+        item = Item(list=list_, text='')
+
+        with self.assertRaises(Exception):
+            item.save()    

@@ -11,5 +11,5 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         if self.text == '':
-            raise Exception("Não pode salvar item vazio")
+            raise Exception("Você não pode enviar um item vazio")
         super().save(*args, **kwargs)
