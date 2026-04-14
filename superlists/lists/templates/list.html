@@ -2,49 +2,80 @@
 <html>
 <head>
     <title>To-Do lists</title>
+
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
             text-align: center;
             margin-top: 50px;
         }
 
+        h1 {
+            font-size: 32px;
+        }
+
         input {
-            width: 300px;
             padding: 10px;
             font-size: 16px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
 
         table {
-            margin: 20px auto;
+            margin: 30px auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ccc;
         }
 
         .error {
             color: red;
-            margin-top: 10px;
+            margin-top: 15px;
         }
     </style>
 </head>
+
 <body>
 
-<h1>List {{ list.id }}</h1>
+    <h1>List {{ list.id }}</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    <input name="item_text" placeholder="Enter a to-do item" />
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        <input name="item_text" placeholder="Enter a to-do item" />
+        <button type="submit">Add</button>
+    </form>
 
-{% if error %}
-<p class="error">{{ error }}</p>
-{% endif %}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
 
-<table>
-    {% for item in items %}
-        <tr>
-            <td>{{ forloop.counter }}: {{ item.text }}</td>
-        </tr>
-    {% endfor %}
-</table>
+    <table>
+        {% for item in items %}
+            <tr>
+                <td>{{ forloop.counter }}: {{ item.text }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
 </body>
 </html>
