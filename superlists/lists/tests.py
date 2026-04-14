@@ -8,6 +8,13 @@ class ItemModelTest(TestCase):
         list_ = List.objects.create()
 
         item = Item(list=list_, text='')
-        
+
         with self.assertRaises(Exception):
             item.save()
+
+
+class HomePageTest(TestCase):
+
+    def test_invalid_input_nothing_saved(self):
+        self.client.post('/', data={'item_text': ''})
+        self.assertEqual(Item.objects.count(), 0)
